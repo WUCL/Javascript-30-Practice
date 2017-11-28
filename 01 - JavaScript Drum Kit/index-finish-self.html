@@ -58,23 +58,28 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-  window.addEventListener('keydown', playSound);
-  const keys = document.querySelectorAll(`.key`);
-  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-
-  function removeTransition(e) {
-    if(e.propertyName !== 'transform') return;
-    this.classList.remove('playing');
-  }
-
-  function playSound(e) {
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-    if(!audio) return;
-    audio.currentTime = 0;
-    audio.play();
-    key.classList.add('playing');    
-  }
+  var keys = document.getElementsByClassName('key');
+  var audios = document.getElementsByTagName('AUDIO');
+  window.addEventListener('keydown', function(e) {
+    Array.from(keys).forEach(function(key) {
+      if(key.dataset.key == e.keyCode) {
+        Array.from(audios).forEach(function(audio) {
+          if(audio.dataset.key == e.keyCode) {
+            var playback = new Audio(audio.getAttribute('src'))
+            playback.play();
+            key.className = "key playing";
+          }
+        })
+      }
+    });
+  });
+  window.addEventListener('keyup', function(e) {
+    Array.from(keys).forEach(function(key) {
+      if(key.dataset.key == e.keyCode) {
+        key.className = "key";
+      }
+    });   
+  });
 </script>
 
 
