@@ -18,28 +18,55 @@
     }
 
     // Regular
+    console.log('Hello')
 
     // Interpolated
+    console.log('Hello little %s', 'shit')
 
     // Styled
+    console.log('%c Big Shit!', 'color: #780011; font-size: 32px;')
 
     // warning!
+    console.warn('%c Oh No!!!', 'background-color: gold; color: white;')
 
     // Error :|
+    console.error('Shit!')
 
     // Info
+    console.info('Old tree means trees older than 100 years.')
 
-    // Testing
+    // Testing'
+    const testingUnit = document.querySelector('p')
+    console.assert(testingUnit.classList.contains('dudi'), 'There is no fucking dudi')
 
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
+    console.dir(testingUnit)
 
     // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`)
+        console.log(`This is ${dog.name}`)
+        console.log(`${dog.name} is ${dog.age} years old.`)
+      console.groupEnd(`${dog.name}`)
+    })
 
     // counting
+    for(let i = 0; i < 10; i++) {
+      console.count('dudi')
+      if(i % 3 === 1) { console.count('dudu')}     
+    }
 
     // timing
+    console.time('fetching data')
+    fetch('https://api.github.com/users/godlike0108')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetching data')
+        console.table(data)
+      });
 
   </script>
 </body>
