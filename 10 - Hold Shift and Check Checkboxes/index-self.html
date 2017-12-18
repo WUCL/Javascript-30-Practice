@@ -99,31 +99,47 @@
   </div>
 
 <script>
+  const items = document.querySelectorAll(`input[type='checkbox']`);
+  let isShiftDown = false;
+  let lastItemIndex;
+  let currentItemIndex;
 
-  const checkboxes = document.querySelectorAll(`.inbox input[type="checkbox"]`);
 
-  function handleCheck(e) {
-    let inBetween = false;
-
-    // Check shiftkey down
-    // Check if checked, not unchecked
-    if(e.shiftKey && this.checked) {
-      checkboxes.forEach(checkbox => {
-        if(checkbox === this || checkbox === lastChecked) {
-          inBetween = !inBetween;
+  function checkInterval(e) {
+    console.log(e)
+    if(e.target.checked) {
+      // get its index
+      currentItemIndex = Array.from(items).indexOf(e.target);
+      if(isShiftDown && typeof lastItemIndex === 'number') {
+        if(currentItemIndex > lastItemIndex) {
+          for(let i = lastItemIndex; i < currentItemIndex + 1; i++) {
+            items[i].checked = true;
+          }
+        } else {
+          for(let i = currentItemIndex; i < lastItemIndex + 1; i++) {
+            items[i].checked = true;
+          }          
         }
-
-        if(inBetween) {
-          checkbox.checked = true;
-        }        
-      })
+      }
+      // Record last checked item
+      lastItemIndex = currentItemIndex;
+      console.log(typeof lastItemIndex)
+    } else {
+      // Reset record if unchecked
+      currentItemIndex = undefined;
+      lastItemIndex = undefined;
     }
-
-    lastChecked = this;
-
   }
 
-  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+  items.forEach(item => {
+    item.addEventListener('click', checkInterval);
+    item.addEventListener('keydown', (e) => {
+      if(e.keyCode === 16) { isShiftDown = true }
+    });
+    item.addEventListener('keyup', (e) => {
+      if(e.keyCode === 16) { isShiftDown = false }
+    });
+  });
  
 </script>
 </body>
