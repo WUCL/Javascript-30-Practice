@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OTree Monkey's Crop List</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>輸入農作物名稱</li>
+      <li>或是年度</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/godlike0108/772fc95084aeeeb1b9e6157d7d2c9274/raw/45d105c65b17782537a9fa1baf103efbba1226a4/crop.json';
+
+const crops = [];
+const searchInput = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+const prom = fetch(endpoint)
+  .then(response => response.json())
+  .then(data => crops.push(...data));
+
+console.log(crops)
+
+function findMatches(wordToMatch, crops) {
+  return crops.filter(crop => {
+    const regex = new RegExp(wordToMatch, 'gi');
+    return crop['作物名稱'].match(regex) || crop['年度'].match(regex);
+  });
+}
+
+function numberWithCommas(x) {
+  return `${Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}噸`;
+}
+
+function displayMatches() {
+  const matchArray = findMatches(this.value, crops);
+  const html = matchArray.map(crop => {
+    const regex = RegExp(this.value, 'gi');
+    const cityName = crop['作物名稱'].replace(regex, `
+      <span class="hl">${this.value}</span>
+    `);
+    const stateName = crop['年度'].replace(regex, `
+      <span class="hl">${this.value}</span>
+    `);
+    return `
+      <li>
+        <span class="name">${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(crop['產量'])}</span>
+      </li>
+    `;
+  }).join('');
+  if(searchInput.value != '') {
+    suggestions.innerHTML = html;
+  } else {
+    suggestions.innerHTML = `
+      <li>輸入農作物名稱</li>
+      <li>或是年度</li>      
+    `;
+  }
+}
+
+searchInput.addEventListener('change', displayMatches);
+searchInput.addEventListener('keyup', displayMatches);
+
+</script>
+  </body>
+</html>
