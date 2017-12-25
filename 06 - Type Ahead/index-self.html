@@ -8,7 +8,7 @@
 <body>
 
   <form class="search-form">
-    <input type="text" class="search" placeholder="City or State">
+    <input type="text" class="search" placeholder="老樹猴的果物">
     <ul class="suggestions">
       <li>輸入農作物名稱</li>
       <li>或是年度</li>
@@ -42,15 +42,15 @@ function displayMatches() {
   const matchArray = findMatches(this.value, crops);
   const html = matchArray.map(crop => {
     const regex = RegExp(this.value, 'gi');
-    const cityName = crop['作物名稱'].replace(regex, `
+    const cropName = crop['作物名稱'].replace(regex, `
       <span class="hl">${this.value}</span>
     `);
-    const stateName = crop['年度'].replace(regex, `
+    const cropYear = crop['年度'].replace(regex, `
       <span class="hl">${this.value}</span>
     `);
     return `
       <li>
-        <span class="name">${cityName}, ${stateName}</span>
+        <span class="name">${cropName}, ${cropYear}</span>
         <span class="population">${numberWithCommas(crop['產量'])}</span>
       </li>
     `;
@@ -65,8 +65,8 @@ function displayMatches() {
   }
 }
 
-searchInput.addEventListener('change', displayMatches);
-searchInput.addEventListener('keyup', displayMatches);
+searchInput.addEventListener('input', displayMatches);
+
 
 </script>
   </body>
