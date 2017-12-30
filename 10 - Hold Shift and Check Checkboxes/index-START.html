@@ -101,6 +101,7 @@
 <script>
 
   const checkboxes = document.querySelectorAll(`.inbox input[type="checkbox"]`);
+  let lastChecked ;
 
   function handleCheck(e) {
     let inBetween = false;
@@ -115,7 +116,7 @@
 
         if(inBetween) {
           checkbox.checked = true;
-        }        
+        }     
       })
     }
 

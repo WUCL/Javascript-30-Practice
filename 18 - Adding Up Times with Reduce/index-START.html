@@ -182,6 +182,40 @@
     </li>
   </ul>
 <script>
+const videos = document.querySelectorAll('[data-time]');
+
+function toSeconds(time) {
+  const separateTime = time.split(':').map(parseFloat);
+  return separateTime[0] * 60 + separateTime[1];
+}
+
+function toHMS(secondsLeft) {
+  const hr = Math.floor(secondsLeft / 3600);
+  const min = Math.floor(secondsLeft % 3600 / 60);
+  const sec = secondsLeft % 60;
+  return {
+    hr: hr,
+    min: min,
+    sec: sec,
+  };
+}
+
+// const totalSeconds = [...videos].reduce((accumulator, currentValue) => {
+//   return accumulator + toSeconds(currentValue.dataset.time);
+// }, 0);
+
+// console.log(totalSeconds)
+
+const totalSeconds = [...videos]
+  .map(video => toSeconds(video.dataset.time))
+  .reduce((total, sec) => total + sec);
+
+const HMS = toHMS(totalSeconds);
+
+console.log(HMS)
+
+
+
 </script>
 </body>
 </html>

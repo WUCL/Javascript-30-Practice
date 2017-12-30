@@ -60,8 +60,7 @@ toggle.addEventListener('click', togglePlay);
 skipButtons.forEach(button => button.addEventListener('click', skip));
 
 ranges.forEach(range => {
-	range.addEventListener('click', handleRangeUpdate);
-	range.addEventListener('mousemove', handleRangeUpdate);
+	range.addEventListener('input', handleRangeUpdate);
 });
 
 let mousedown = false;

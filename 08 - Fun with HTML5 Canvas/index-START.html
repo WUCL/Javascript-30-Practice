@@ -31,6 +31,8 @@
 
 		ctx.beginPath();
 		ctx.moveTo(lastX, lastY);
+
+
 		ctx.lineTo(e.offsetX, e.offsetY);
 		ctx.stroke();
 
@@ -49,13 +51,10 @@
 			direction = !direction;
 		}
 
-
-
 	}
 
 	canvas.addEventListener('mousedown', (e) => {
 		isDrawing = true;
-
 		// ES6 Destructuring Assignment
 		[lastX, lastY] = [e.offsetX, e.offsetY];
 	});
