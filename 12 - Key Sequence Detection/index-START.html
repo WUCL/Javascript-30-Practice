@@ -2,22 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Key Detection</title>
-  <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+  <title>Dudi's Love Letter</title>
 </head>
 <body>
+<audio id="dudi-voice" src="sound/dudi.m4a"></audio>
+
 <script>
 	const pressed = [];
 	const secretCode = 'dudi';
+	const dudiVoice = document.querySelector('#dudi-voice');
 
 	window.addEventListener('keyup', (e) => {
-		console.log(e.key);
 		pressed.push(e.key);
 		pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length);
 		if(pressed.join('') === secretCode) {
-			console.log('Froggy Dudi!');
+			speakDudi();
 		}
 	})
+
+	function speakDudi() {
+		dudiVoice.currentTime = 0;
+		dudiVoice.play();
+	}
 </script>
 </body>
 </html>
