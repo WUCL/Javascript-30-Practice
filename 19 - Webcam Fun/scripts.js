@@ -3,6 +3,9 @@ const canvas = document.querySelector('.photo');
 const ctx = canvas.getContext('2d');
 const strip = document.querySelector('.strip');
 const snap = document.querySelector('.snap');
+const controls = document.querySelector('.rgb');
+const effectType = ['normal', 'red', 'contrast', 'grayscale', 'flip', 'mirror', 'split', 'filter'];
+let effectIndex = 0;
 
 function getVideo() {
 	navigator.mediaDevices.getUserMedia({
@@ -36,6 +39,36 @@ function updateVideo(timestamp, width, height) {
 	ctx.drawImage(video, 0, 0, width, height);
 
 	let pixels = ctx.getImageData(0, 0, width, height);
+	controls.style.display = 'none';
+
+
+	switch(effectType[effectIndex]) {
+		case 'red':
+			pixels = redEffect(pixels);
+			break;
+		case 'contrast':
+			pixels = contrast(pixels);
+			break;
+		case 'grayscale':
+			pixels = grayscale(pixels);
+			break;
+		case 'flip':
+			pixels = horizontalFlip(pixels, width, height);
+			break;
+		case 'mirror':
+			pixels = mirror(pixels, width, height);
+			break;
+		case 'split':
+			pixels = rgbSplit(pixels);
+			break;
+		case 'filter':
+			controls.style.display = 'block';
+			pixels = greenScreen(pixels);
+			break;
+		default:
+			pixels = ctx.getImageData(0, 0, width, height);
+			break;
+	}
 	// pixels = redEffect(pixels);
 	// pixels = contrast(pixels);
 	// pixels = grayscale(pixels);
@@ -43,7 +76,7 @@ function updateVideo(timestamp, width, height) {
 	// pixels = horizontalFlip(pixels, width, height);
 	// pixels = rgbSplit(pixels);
 	// ctx.globalAlpha = 0.5;
-	pixels = greenScreen(pixels);
+	// pixels = greenScreen(pixels);
 
 	ctx.putImageData(pixels, 0, 0);
 	window.requestAnimationFrame(timestamp => {
@@ -64,6 +97,11 @@ function takePhoto() {
 	link.setAttribute('download', 'handsome');
 	link.innerHTML = `<img src=${data} alt="selfy">`;
 	strip.insertBefore(link, strip.firstChild);
+}
+
+function switchEffect() {
+	effectIndex = (effectIndex + 1) % 8;
+	console.log(effectIndex)
 }
 
 function redEffect(pixels) {
